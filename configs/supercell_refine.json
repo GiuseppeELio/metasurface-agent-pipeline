@@ -1,0 +1,75 @@
+{
+  "name": "supercell_refine",
+  "description": "Global robust refinement of a library supercell (8 x 700 nm). Use with --init runs/<supercell_dir>/rho_supercell.npy; for N atoms set period_nm, grid, order accordingly.",
+  "precision": "complex64",
+  "wavelengths_nm": [
+    1550.0
+  ],
+  "illumination": "from_substrate",
+  "period_nm": [
+    5600.0,
+    700.0
+  ],
+  "grid": [
+    1120,
+    140
+  ],
+  "order": [
+    32,
+    5
+  ],
+  "verify_order": [
+    56,
+    8
+  ],
+  "substrate": {
+    "n": 1.444
+  },
+  "superstrate": {
+    "n": 1.0
+  },
+  "layer": {
+    "thickness_nm": 800.0,
+    "core": {
+      "n": 3.476
+    },
+    "background": {
+      "n": 1.0
+    }
+  },
+  "objective": {
+    "type": "diffraction_efficiency",
+    "port": "transmission",
+    "orders": [
+      [
+        1,
+        0
+      ]
+    ],
+    "input_pols": [
+      "x",
+      "y"
+    ]
+  },
+  "optimizer": {
+    "iters": 120,
+    "lr": 0.008,
+    "beta_start": 30.0,
+    "beta_max": 1000.0,
+    "blur_radius_nm": 40.0,
+    "symmetry": "y",
+    "seed": 1,
+    "checkpoint_every": 20,
+    "robust_mode": "geometric",
+    "edge_shift_nm": 10.0,
+    "robust_blur_nm": 25.0,
+    "softmin_k": 10.0,
+    "eval_shifts_nm": [
+      -10,
+      -5,
+      0,
+      5,
+      10
+    ]
+  }
+}

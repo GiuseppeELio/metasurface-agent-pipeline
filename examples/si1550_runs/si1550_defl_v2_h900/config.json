@@ -1,0 +1,70 @@
+{
+  "name": "si1550_defl_v2",
+  "description": "v2: thickness sweep of v1 (Si on Si, 1550 nm, +1 T @50deg, unpolarized), higher Fourier truncation",
+  "precision": "complex64",
+  "wavelengths_nm": [
+    1550.0
+  ],
+  "inc_ang_deg": 0.0,
+  "azi_ang_deg": 0.0,
+  "illumination": "from_substrate",
+  "period_nm": [
+    2023.0,
+    400.0
+  ],
+  "grid": [
+    405,
+    80
+  ],
+  "order": [
+    25,
+    5
+  ],
+  "verify_order": [
+    35,
+    7
+  ],
+  "substrate": {
+    "n": 3.476
+  },
+  "superstrate": {
+    "n": 1.0
+  },
+  "layer": {
+    "thickness_nm": 900,
+    "core": {
+      "n": 3.476
+    },
+    "background": {
+      "n": 1.0
+    }
+  },
+  "objective": {
+    "type": "diffraction_efficiency",
+    "port": "transmission",
+    "orders": [
+      [
+        1,
+        0
+      ]
+    ],
+    "input_pols": [
+      "x",
+      "y"
+    ]
+  },
+  "optimizer": {
+    "iters": 300,
+    "lr": 0.02,
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "eps": 1e-08,
+    "beta_max": 1000.0,
+    "blur_radius_nm": 40.0,
+    "symmetry": "y",
+    "seed": 1,
+    "checkpoint_every": 50,
+    "history_every": 10,
+    "log_every": 1
+  }
+}

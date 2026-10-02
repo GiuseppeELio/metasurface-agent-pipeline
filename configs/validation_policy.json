@@ -1,0 +1,13 @@
+{
+  "description": "Cross-solver validation policy (TORCWA <-> Meep). The agent asks the user once and edits this file.",
+  "mode": "final",
+  "modes_available": {
+    "off": "no FDTD check (not recommended for anything that is reported)",
+    "final": "full validation (V2) of the final designs only",
+    "every_stage": "quick validation (V1) of the candidates at every decision point, full validation (V2) at the end"
+  },
+  "quick": {"resolutions": [30], "pols": ["x", "y"], "fields": false, "shifts_nm": []},
+  "full": {"resolutions": [40, 60], "pols": ["x", "y"], "fields": true, "shifts_nm": [-10, 10], "shift_resolution": 40},
+  "tolerance": {"eta_abs": 0.03, "flux_abs": 0.02},
+  "on_fail": "warn"
+}

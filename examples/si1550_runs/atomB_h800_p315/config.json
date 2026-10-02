@@ -1,0 +1,78 @@
+{
+  "name": "atomB_h800",
+  "description": "Freeform Si meta-atom on SiO2, square cell, D4 symmetric (pol.-independent), start from disk R=300 nm; maximize Re(t00 e^{-i phi_target}) at 1550 nm",
+  "precision": "complex64",
+  "wavelengths_nm": [
+    1550.0
+  ],
+  "illumination": "from_substrate",
+  "period_nm": [
+    700.0,
+    700.0
+  ],
+  "grid": [
+    140,
+    140
+  ],
+  "order": [
+    9,
+    9
+  ],
+  "verify_order": [
+    13,
+    13
+  ],
+  "substrate": {
+    "n": 1.444
+  },
+  "superstrate": {
+    "n": 1.0
+  },
+  "layer": {
+    "thickness_nm": 800,
+    "core": {
+      "n": 3.476
+    },
+    "background": {
+      "n": 1.0
+    }
+  },
+  "init_shape": {
+    "type": "disk",
+    "radius_nm": 300.0,
+    "noise": 0.1
+  },
+  "objective": {
+    "type": "zero_order_phase",
+    "target_phase_deg": 315,
+    "input_pols": [
+      "x",
+      "y"
+    ]
+  },
+  "optimizer": {
+    "iters": 200,
+    "lr": 0.02,
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "eps": 1e-08,
+    "beta_max": 1000.0,
+    "blur_radius_nm": 40.0,
+    "symmetry": "d4",
+    "seed": 1,
+    "checkpoint_every": 50,
+    "history_every": 10,
+    "log_every": 1,
+    "eval_shifts_nm": [
+      -10,
+      -5,
+      0,
+      5,
+      10
+    ],
+    "robust_mode": "geometric",
+    "edge_shift_nm": 10,
+    "robust_blur_nm": 25,
+    "softmin_k": 10
+  }
+}

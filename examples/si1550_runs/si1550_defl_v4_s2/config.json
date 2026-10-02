@@ -1,0 +1,84 @@
+{
+  "name": "si1550_defl_v4",
+  "description": "v4: geometric robustness (exact +/-10 nm edge shift via double filtering, soft-min), h=900 nm, Si on Si, 1550 nm, +1 T @50deg, unpolarized",
+  "precision": "complex64",
+  "wavelengths_nm": [
+    1550.0
+  ],
+  "inc_ang_deg": 0.0,
+  "azi_ang_deg": 0.0,
+  "illumination": "from_substrate",
+  "period_nm": [
+    2023.0,
+    400.0
+  ],
+  "grid": [
+    405,
+    80
+  ],
+  "order": [
+    25,
+    5
+  ],
+  "verify_order": [
+    35,
+    7
+  ],
+  "substrate": {
+    "n": 3.476
+  },
+  "superstrate": {
+    "n": 1.0
+  },
+  "layer": {
+    "thickness_nm": 900.0,
+    "core": {
+      "n": 3.476
+    },
+    "background": {
+      "n": 1.0
+    }
+  },
+  "objective": {
+    "type": "diffraction_efficiency",
+    "port": "transmission",
+    "orders": [
+      [
+        1,
+        0
+      ]
+    ],
+    "input_pols": [
+      "x",
+      "y"
+    ]
+  },
+  "optimizer": {
+    "iters": 300,
+    "lr": 0.02,
+    "beta1": 0.9,
+    "beta2": 0.999,
+    "eps": 1e-08,
+    "beta_max": 1000.0,
+    "blur_radius_nm": 40.0,
+    "symmetry": "y",
+    "seed": 2,
+    "checkpoint_every": 50,
+    "history_every": 10,
+    "log_every": 1,
+    "softmin_k": 10.0,
+    "robust_start_frac": 0.0,
+    "robust_mode": "geometric",
+    "edge_shift_nm": 10.0,
+    "robust_blur_nm": 25.0,
+    "eval_shifts_nm": [
+      -15,
+      -10,
+      -5,
+      0,
+      5,
+      10,
+      15
+    ]
+  }
+}

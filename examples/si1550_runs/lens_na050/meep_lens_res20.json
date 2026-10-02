@@ -1,0 +1,28 @@
+{
+  "run": "lens_na050",
+  "resolution": 20.0,
+  "crop_cells": null,
+  "cells": 29,
+  "aperture_diameter_um": 20.299999999999997,
+  "T_total": 0.8531163029601063,
+  "z_focus_um": 16.173890441078175,
+  "fwhm_x_um": 1.6043629102117087,
+  "fwhm_y_um": 1.4354826038736341,
+  "focusing_efficiency": 0.7661981432409506,
+  "diffraction_limit_fwhm_at_focus_um": 1.4988127187504117,
+  "materialgrid_px": [
+    812,
+    812
+  ],
+  "wall_time_s": 1041.1,
+  "fdtd_time_s": 942.8,
+  "lpa_model": {
+    "z_focus_um": 16.349693598046414,
+    "peak_I": 99.47815674514227,
+    "fwhm_x_um": 1.575,
+    "fwhm_y_um": 1.4874999999999998,
+    "focusing_efficiency": 0.8175744717281778,
+    "transmitted_fraction": 0.979830265847373,
+    "strehl_vs_ideal": 0.8787554274178881
+  }
+}

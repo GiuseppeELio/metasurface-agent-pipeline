@@ -1,0 +1,126 @@
+{
+  "run": "atomB2_h800_p135_disk",
+  "iters": 200,
+  "fom_final": 0.9816129803657532,
+  "fom_binary": 0.9813140630722046,
+  "details_final": [
+    {
+      "wavelength_nm": 1550.0,
+      "T_x": 0.9683196569901753,
+      "phase_err_deg_x": -4.257212175355905,
+      "phase_rel_deg_x": 130.7427878246441,
+      "T_y": 0.9694470287724251,
+      "phase_err_deg_y": -4.241217450966864,
+      "phase_rel_deg_y": 130.75878254903313
+    }
+  ],
+  "details_binary": [
+    {
+      "wavelength_nm": 1550.0,
+      "T_x": 0.9689402262925491,
+      "phase_err_deg_x": -4.51413683150923,
+      "phase_rel_deg_x": 130.48586316849077,
+      "T_y": 0.9690100093142355,
+      "phase_err_deg_y": -4.5107524805936805,
+      "phase_rel_deg_y": 130.48924751940638
+    }
+  ],
+  "order_analysis_binary": [
+    {
+      "wavelength_nm": 1550.0,
+      "fourier_order": [
+        9,
+        9
+      ],
+      "pols": {
+        "x": {
+          "T": {
+            "0,0": {
+              "eff": 0.9689,
+              "angle_deg": 0.0
+            }
+          },
+          "R": {
+            "0,0": {
+              "eff": 0.031,
+              "angle_deg": 0.0
+            }
+          },
+          "T_total": 0.9689,
+          "R_total": 0.031,
+          "absorbed_or_error": 0.0001
+        },
+        "y": {
+          "T": {
+            "0,0": {
+              "eff": 0.969,
+              "angle_deg": 0.0
+            }
+          },
+          "R": {
+            "0,0": {
+              "eff": 0.031,
+              "angle_deg": 0.0
+            }
+          },
+          "T_total": 0.969,
+          "R_total": 0.031,
+          "absorbed_or_error": 0.0
+        }
+      }
+    }
+  ],
+  "convergence_check": {
+    "order": [
+      13,
+      13
+    ],
+    "fom_binary": 0.9785387516021729,
+    "rel_diff": 0.002828158256840891
+  },
+  "robustness_binary": {
+    "-10nm": {
+      "fom_binary": 0.7710557579994202,
+      "fill_fraction": 0.16025510430335999
+    },
+    "-5nm": {
+      "fom_binary": 0.9095129370689392,
+      "fill_fraction": 0.1696428507566452
+    },
+    "+0nm": {
+      "fom_binary": 0.9813140630722046,
+      "fill_fraction": 0.17923469841480255
+    },
+    "+5nm": {
+      "fom_binary": 0.9405215382575989,
+      "fill_fraction": 0.18903061747550964
+    },
+    "+10nm": {
+      "fom_binary": 0.7610196471214294,
+      "fill_fraction": 0.19903060793876648
+    }
+  },
+  "feature_size": {
+    "<30nm": {
+      "solid_%": 0.0,
+      "void_%": 0.0
+    },
+    "<40nm": {
+      "solid_%": 0.0,
+      "void_%": 0.0
+    },
+    "<60nm": {
+      "solid_%": 0.0,
+      "void_%": 0.0
+    },
+    "<80nm": {
+      "solid_%": 0.0,
+      "void_%": 0.0
+    }
+  },
+  "fill_fraction": 0.17923469841480255,
+  "grayness": 0.0003582394274417311,
+  "grayness_raw_rho": 0.010678743943572044,
+  "wall_time_s": 321.0,
+  "s_per_iter": 1.605
+}

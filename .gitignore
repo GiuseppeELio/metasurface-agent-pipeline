@@ -1,0 +1,12 @@
+hpc/site.env
+runs/
+logs/
+queue/
+.venv/
+.meep-env/
+.mamba/
+bin/micromamba
+third_party/
+__pycache__/
+*.pyc
+.DS_Store

@@ -1,0 +1,79 @@
+{
+  "name": "metagrating_si1550",
+  "description": "Example: robust freeform Si metagrating on Si substrate, lambda=1550 nm, +1 transmitted order at 50 deg into air, unpolarized; geometric robustness +/-10 nm",
+  "precision": "complex64",
+  "wavelengths_nm": [
+    1550.0
+  ],
+  "inc_ang_deg": 0.0,
+  "azi_ang_deg": 0.0,
+  "illumination": "from_substrate",
+  "period_nm": [
+    2023.0,
+    400.0
+  ],
+  "grid": [
+    405,
+    80
+  ],
+  "order": [
+    25,
+    5
+  ],
+  "verify_order": [
+    35,
+    7
+  ],
+  "substrate": {
+    "n": 3.476
+  },
+  "superstrate": {
+    "n": 1.0
+  },
+  "layer": {
+    "thickness_nm": 900.0,
+    "core": {
+      "n": 3.476
+    },
+    "background": {
+      "n": 1.0
+    }
+  },
+  "objective": {
+    "type": "diffraction_efficiency",
+    "port": "transmission",
+    "orders": [
+      [
+        1,
+        0
+      ]
+    ],
+    "input_pols": [
+      "x",
+      "y"
+    ]
+  },
+  "optimizer": {
+    "iters": 300,
+    "lr": 0.02,
+    "beta_max": 1000.0,
+    "blur_radius_nm": 40.0,
+    "symmetry": "y",
+    "seed": 1,
+    "checkpoint_every": 50,
+    "softmin_k": 10.0,
+    "robust_start_frac": 0.0,
+    "robust_mode": "geometric",
+    "edge_shift_nm": 10.0,
+    "robust_blur_nm": 25.0,
+    "eval_shifts_nm": [
+      -15,
+      -10,
+      -5,
+      0,
+      5,
+      10,
+      15
+    ]
+  }
+}
