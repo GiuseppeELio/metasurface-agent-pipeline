@@ -34,6 +34,9 @@ Check whether `hpc/site.env` exists. If it does not, ask the user, one short blo
    - If the machine runs Windows outside WSL (PowerShell or cmd), explain that the bridge and setup scripts are
      bash. Ask the user to install WSL2 (Ubuntu), clone the repository inside the WSL file system and start the
      agent there.
+   - Check that the scripts in `hpc/` are executable (`ls -l hpc/*.sh`). Copies obtained from a ZIP archive
+     (Codeberg, Zenodo), a cloud drive or an exFAT/FAT disk lose the execute bit. If it is missing, run
+     `chmod +x hpc/*.sh` and tell the user why.
 
 1. **Where should jobs run?**
    - (a) this machine, with an NVIDIA GPU;

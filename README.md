@@ -86,11 +86,17 @@ ten-minute CPU tour of every stage on these data, and a starting point for new d
 ## Quick start (local)
 
 ```bash
-git clone https://codeberg.org/<owner>/metasurface-agent-pipeline.git && cd metasurface-agent-pipeline
+git clone https://codeberg.org/GiuseppeELio/metasurface-agent-pipeline.git && cd metasurface-agent-pipeline
 bash hpc/setup_env.sh                     # creates .venv with torch, torcwa, numpy, scipy, matplotlib
 source .venv/bin/activate
 python run_topopt.py --config configs/metaatom_template.json --iters 30 --order 5 5 --device auto
 ```
+
+> **Downloaded as a ZIP or copied through a cloud drive?** Archives (Codeberg ZIP, Zenodo) and services such as
+> Google Drive, as well as exFAT/FAT external disks, do not keep the execute permission of the scripts, and
+> `./hpc/bridge.sh` then fails with `permission denied`. Restore it once from the repository folder with
+> `chmod +x hpc/*.sh`, or run the scripts through bash (`bash hpc/bridge.sh setup`). `git clone` keeps the
+> permissions.
 
 Hardware:
 
