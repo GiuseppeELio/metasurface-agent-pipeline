@@ -38,6 +38,7 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from ptopt.lensprop import VectorASM  # noqa: E402
+from ptopt.materials import refractive_index  # noqa: E402
 if int(os.environ.get("PMI_RANK", os.environ.get("OMPI_COMM_WORLD_RANK", "0"))) != 0:
     sys.exit(0)   # started under mpirun (e.g. as a line of a Meep list): only rank 0 builds the lens
 ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -69,7 +70,7 @@ assert abs(cfg0["period_nm"][1] / 1000.0 - P) < 1e-9, "square cells expected"
 lam = float(cfg0.get("wavelengths_nm", [cfg0.get("wavelength_nm")])[0]) / 1000.0
 out_med = cfg0.get("superstrate", {"n": 1.0}) if cfg0.get("illumination", "from_substrate") == "from_substrate" \
     else cfg0.get("substrate", {"n": 1.0})
-n_out = float(np.real(complex(out_med.get("n", 1.0))))
+n_out = float(np.real(refractive_index(out_med, lam * 1000.0)))   # constant n, materials/*.txt or rii:...
 k = 2 * math.pi * n_out / lam
 
 Nc = int(round(a.diameter_um / P)); Nc += (Nc + 1) % 2           # odd: one cell on the optical axis

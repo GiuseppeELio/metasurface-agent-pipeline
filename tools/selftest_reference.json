@@ -1,0 +1,31 @@
+{
+  "description": "Reference numbers of tools/selftest.py (worked example, silicon at 1550 nm). Computed on CPU (Linux x86_64; torch 2.5 and 2.15 agree to 1e-4). Tolerances absorb platform/BLAS differences.",
+  "quick": {
+    "rcwa_reference": {
+      "x_T_+1": 0.812,
+      "y_T_+1": 0.6889,
+      "x_T_total": 0.8403,
+      "y_T_total": 0.6964,
+      "tol": 0.003
+    },
+    "supercell": {
+      "eta_plus1": 0.8661,
+      "eff_x": 0.8352,
+      "eff_y": 0.897,
+      "tol": 0.003
+    },
+    "metalens": {
+      "focusing_efficiency": 0.8173,
+      "strehl": 0.8788,
+      "fwhm_x_um": 1.5676,
+      "tol": 0.005
+    }
+  },
+  "full": {
+    "run_topopt": {
+      "fom_binary": 0.6744,
+      "tol": 0.02,
+      "note": "150 iterations, order [10,3], grid 200x40; the full GPU settings reach about 0.74"
+    }
+  }
+}

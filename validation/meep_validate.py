@@ -58,13 +58,25 @@ if a.shift_nm:
                       cfg["period_nm"][1] / rho.shape[1]).astype(np.float64)
     assert not a.fields, "--fields is only supported for the nominal design"
 
+
+def _index(spec, lam_nm):
+    """Real index of a material spec at the design wavelength: constant n, a materials/*.txt table or a
+    refractiveindex.info entry ("rii:..."), resolved with the same code as the optimizer (k is ignored here)."""
+    spec = spec or {"n": 1.0}
+    if "material" in spec:
+        import sys as _s
+        _s.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from ptopt.materials import refractive_index
+        return float(refractive_index(spec, lam_nm).real)
+    return complex(spec.get("n", 1.0)).real
+
 lam = float(cfg.get("wavelengths_nm", [cfg.get("wavelength_nm")])[0]) / 1000.0
 sx, sy = cfg["period_nm"][0] * nat / 1000.0, cfg["period_nm"][1] / 1000.0
 h = cfg["layer"]["thickness_nm"] / 1000.0
-n_core = complex(cfg["layer"]["core"].get("n", 1.0)).real
-n_bg = complex(cfg["layer"].get("background", {"n": 1.0}).get("n", 1.0)).real
-n_sub = cfg.get("substrate", {"n": 1.0})["n"]
-n_sup = cfg.get("superstrate", {"n": 1.0})["n"]
+n_core = _index(cfg["layer"]["core"], lam * 1000.0)
+n_bg = _index(cfg["layer"].get("background", {"n": 1.0}), lam * 1000.0)
+n_sub = _index(cfg.get("substrate", {"n": 1.0}), lam * 1000.0)
+n_sup = _index(cfg.get("superstrate", {"n": 1.0}), lam * 1000.0)
 if cfg.get("illumination", "from_substrate") == "from_superstrate":
     n_sub, n_sup = n_sup, n_sub          # input medium is always "below" (z < 0) here
 assert rho.shape[0] > 1 and rho.shape[1] > 1

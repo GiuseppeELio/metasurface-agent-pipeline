@@ -69,6 +69,16 @@ Check whether `hpc/site.env` exists. If it does not, ask the user, one short blo
 6. Submit `check` (write `queue/check.req` containing `check`). Read the log:
    - `cuda available True`, and the eig benchmark;
    - if CUDA is not available, the driver is probably too old for the wheel: re-run `setup` with the cu118 settings.
+
+   Then run the self-test on the machine where the environment was built: `python tools/selftest.py` (about 1 min
+   on a CPU; on a cluster, as a line `tools/selftest.py` of a GPU list). It reproduces reference numbers of the
+   worked example. If a check fails, stop and report it before designing anything.
+6b. **Optical constants.** Offer the refractiveindex.info database. Tell the user first: "I will download the
+   refractiveindex.info database (M. N. Polyanskiy, CC0 public domain) from GitHub, about 30 MB, once." Then run
+   `python tools/fetch_materials.py` (on a cluster, run it locally and let the bridge push `materials/`, or as a
+   list line on the login node). Configs can then use `{"material": "rii:<shelf>/<book>/<page>"}`; find pages with
+   `--search`, inspect them with `--show` (see `materials/README.md`). Prefer thin-film data for deposited layers,
+   check that the data range covers the whole band, and always report the data sets and references you used.
 7. **Meep (FDTD validation).** Explain this to the user in a few lines, then let them decide:
    - **What it is for.** Meep is an independent FDTD solver. The pipeline uses it to cross-check every design
      reported as final (section 4.C). Optimization does not need it.
@@ -132,7 +142,9 @@ Record the hardware facts you learn in `hpc/site.env` comments, not in tracked f
 9. **Cross-solver verdict:** a design is reported as final only with a validation verdict (section 4.C). With
    `agree`, report both numbers. With `marginal` or `inconclusive`, say so and propose the step that settles it.
    With `disagree`, do not report the RCWA number as the result: diagnose first.
-10. **Physics sanity:** check propagating orders and angles (printed at start), available phase range versus thickness, and index contrast. Tell the user early if a request is physically infeasible. Example: a single 100 nm Si layer cannot give 2π phase at 1550 nm.
+10. **Materials:** the data sets used (page and reference), their wavelength range versus the design band, and
+    for measured data any fit or extension made where data are missing.
+11. **Physics sanity:** check propagating orders and angles (printed at start), available phase range versus thickness, and index contrast. Tell the user early if a request is physically infeasible. Example: a single 100 nm Si layer cannot give 2π phase at 1550 nm.
 
 ## 4. Proven workflows
 
@@ -152,6 +164,17 @@ Record the hardware facts you learn in `hpc/site.env` comments, not in tracked f
 3. Run `select_atoms.py`: one atom per phase, chosen by the worst case within ±d nm.
 4. Run `supercell.py --library … --levels N` for the desired deflection, sin θ = λ/(N·P). Compare the full-supercell RCWA with the library prediction. The gap measures near-field coupling and shrinks as N grows.
 5. Do a global refinement of the assembled supercell: `configs/supercell_refine.json`, `--init runs/<sc>/rho_supercell.npy`, robust. This mainly recovers fabrication robustness and coupling losses.
+
+### A2. Narrow-band and high-Q targets (quasi-BIC, resonant filters)
+
+1. A mean FoM over wavelengths rewards broadband behaviour. For a sharp resonance, use
+   `objective.wavelength_weights`: for example `wavelengths_nm` [λ0−Δ, λ0, λ0+Δ] with weights [−0.5, 1, −0.5]. Here Δ is
+   larger than the target linewidth and smaller than the distance to the next mode.
+2. Symmetry-protected BICs become quasi-BICs only through a controlled asymmetry α (Q ∝ 1/α²). Start from a
+   parametric design with an explicit asymmetry, scan α, and check Q with an independent method: a Fano fit of a
+   dense spectrum, or Meep/Harminv with cell × resolution an even integer, so that the grid does not add
+   asymmetry.
+3. Material absorption caps the Q: Q_abs ≈ Re ε / Im ε. Check it before promising a target Q.
 
 ### C. Cross-solver validation stage (TORCWA ↔ Meep)
 

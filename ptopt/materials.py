@@ -19,8 +19,18 @@ class TabulatedMaterial:
         return complex(self._n(lam) + 1j * self._k(lam))
 
 
+_RII = {}
+
+
 def refractive_index(spec, lam_nm):
-    """spec: {"n": 1.46} | {"n": 3.5, "k": 0.01} | {"material": "aSiH"} (file materials/aSiH.txt)."""
+    """spec: {"n": 1.46} | {"n": 3.5, "k": 0.01} | {"material": "aSiH"} (file materials/aSiH.txt)
+    | {"material": "rii:main/Si/nk/Schinke"} (refractiveindex.info database, see ptopt/rii.py)."""
+    if "material" in spec and str(spec["material"]).startswith("rii:"):
+        page = spec["material"][4:]
+        if page not in _RII:
+            from .rii import RIIMaterial
+            _RII[page] = RIIMaterial(page)
+        return _RII[page].nk(lam_nm)
     if "material" in spec:
         path = Path(spec["material"])
         if not path.suffix:

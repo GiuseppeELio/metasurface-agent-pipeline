@@ -10,3 +10,6 @@ third_party/
 __pycache__/
 *.pyc
 .DS_Store
+materials/refractiveindex.info-database/
+refractiveindex.info-database-main/
+runs_selftest/

@@ -9,6 +9,6 @@ case "$(uname -s)-$(uname -m)" in
 esac
 [ -x bin/micromamba ] || curl -Ls "https://micro.mamba.pm/api/micromamba/$PLAT/latest" | tar -xvj bin/micromamba
 export MAMBA_ROOT_PREFIX="$ROOT/.mamba"
-./bin/micromamba create -y -p "$ROOT/.meep-env" -c conda-forge python=3.11 "pymeep=*=mpi_mpich_*" numpy scipy h5py
+./bin/micromamba create -y -p "$ROOT/.meep-env" -c conda-forge python=3.11 "pymeep=*=mpi_mpich_*" numpy scipy h5py pyyaml
 "$ROOT/.meep-env/bin/mpirun" -np 2 "$ROOT/.meep-env/bin/python" -c "import meep as mp; print('meep', mp.__version__)"
 echo "OK: Meep environment in $ROOT/.meep-env"

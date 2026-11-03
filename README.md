@@ -55,6 +55,8 @@ Validation: [MIT Meep](https://meep.readthedocs.io) (FDTD).
 | Post-hoc robustness at higher truncation | `evaluate.py` | `robustness_eval.json` |
 | Metalens from the library + vector angular-spectrum focusing model | `metalens.py` | layout, focal spot, focusing efficiency |
 | Cross-solver validation stage (TORCWA ↔ Meep): plan, run, verdict | `validation/validate.py` | `validation.json`, comparison figures |
+| Optical constants from the refractiveindex.info database (download, search, inspect) | `tools/fetch_materials.py` | `{"material": "rii:<shelf/book/page>"}` in any config |
+| Regression test against the worked example | `tools/selftest.py` | PASS/FAIL per check, exit code |
 | Independent FDTD runs (periodic designs / metalens) | `validation/meep_validate.py`, `validation/meep_lens.py` | `meep_res<R>.json`, `meep_lens_res<R>.json` |
 | Figures of the accompanying paper (optional, for the authors' run set) | `paper/make_figures.py` | `paper/figures/` |
 
@@ -73,7 +75,8 @@ Optimizer features:
 - symmetry constraints (`y`, `x`, `xy`, `d4`);
 - robust formulations: threshold-based, or geometric with an exact ±d nm edge shift;
 - initial shapes (`disk`, `clover`, `cross`, `ring`, `square`, `ellipse`, `triangle`);
-- multi-wavelength FoM averaging;
+- multi-wavelength FoM averaging, or weighted sums for narrow-band / quasi-BIC targets (`objective.wavelength_weights`);
+- materials as constants, n,k tables or refractiveindex.info entries (`materials/README.md`);
 - warm start and resume;
 - `--set key.sub=value` overrides for sweeps.
 
@@ -87,8 +90,9 @@ ten-minute CPU tour of every stage on these data, and a starting point for new d
 
 ```bash
 git clone https://codeberg.org/GiuseppeELio/metasurface-agent-pipeline.git && cd metasurface-agent-pipeline
-bash hpc/setup_env.sh                     # creates .venv with torch, torcwa, numpy, scipy, matplotlib
+bash hpc/setup_env.sh                     # creates .venv with torch, torcwa, numpy, scipy, matplotlib, pyyaml
 source .venv/bin/activate
+python tools/selftest.py                  # ~1 min on CPU: reproduces reference numbers of the worked example
 python run_topopt.py --config configs/metaatom_template.json --iters 30 --order 5 5 --device auto
 ```
 
@@ -127,7 +131,7 @@ The watcher only executes those four sub-commands and rejects shell metacharacte
 ```
 ptopt/            problem definition, materials, objectives, morphology tools
 configs/          example configurations (JSON)
-tools/            sweep generators
+tools/            sweep generators, materials database (fetch_materials.py), self-test (selftest.py)
 validation/       Meep FDTD validation
 hpc/              bridge.sh, environment setup, generic SLURM job templates, site.env.example
 paper/            figures of the accompanying paper (optional; not needed to use the pipeline)
@@ -138,6 +142,8 @@ AGENTS.md         instructions for AI agents working with this repository
 ## Citation
 
 If you use this pipeline, please cite TORCWA (Kim & Lee 2023) and the accompanying paper (reference to be added).
+If you use optical constants from the refractiveindex.info database, cite it as well (M. N. Polyanskiy, *Sci. Data* 11, 94, 2024)
+together with the original source of each data set.
 
 ## License
 
@@ -146,4 +152,5 @@ MIT License, see [`LICENSE`](LICENSE).
 Third-party software is installed separately and keeps its own license:
 - TORCWA: LGPL, installed with `pip install torcwa`;
 - MIT Meep: GPL, installed from conda-forge by `hpc/setup_meep.sh`;
-- PyTorch: BSD-style.
+- PyTorch: BSD-style;
+- refractiveindex.info database: CC0, downloaded on request by `tools/fetch_materials.py`.

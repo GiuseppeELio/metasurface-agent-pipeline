@@ -40,6 +40,7 @@ python run_topopt.py --config <cfg.json> [--device auto|cuda|cpu] [--iters N] [-
 | `substrate`, `superstrate`, `layer.core`, `layer.background` | Materials, as `{"n":..}` or `{"material":"name"}` |
 | `layer.thickness_nm` | Layer thickness |
 | `objective` | `diffraction_efficiency` (orders, port, `input_pols`), `diffraction_selectivity` (+ `suppress`, `penalty`) or `zero_order_phase` (`target_phase_deg`) |
+| `objective.wavelength_weights` | Optional, one weight per `wavelengths_nm` entry: weighted sum instead of the mean (divided by the sum of the positive weights). For narrow-band targets such as quasi-BIC resonances, e.g. `[1545, 1550, 1555]` with `[-0.5, 1, -0.5]`. |
 | `init_shape` | `disk`, `clover`, `cross`, `ring`, `square`, `ellipse` or `triangle`, with sizes in nm and `noise` |
 | `optimizer.iters`, `lr`, `beta_start`, `beta_max` | Adam settings and tanh-projection continuation |
 | `optimizer.blur_radius_nm` | Density filter |
@@ -67,6 +68,14 @@ python run_topopt.py --config <cfg.json> [--device auto|cuda|cpu] [--iters N] [-
 | `python supercell.py --name <sc> --library <lib> --levels N --order Mx My [--shifts -10 0 10]` | To assemble and verify a supercell | Picks atoms closest to k·360°/N. Reports the full-RCWA +1 efficiency for x and y, the library (phase-sampling) prediction, all orders, and edge-shift robustness. Writes `rho_supercell.npy` for `--init`. |
 | `python metalens.py --library <lib> --diameter-um D (--na NA \| --focal-um f) --name <lens>` | Metalens from a library | Hyperbolic phase, one atom per cell (best `sqrt(T)·cos Δφ`). The vector angular-spectrum model gives the axial profile, longitudinal sections, depth of focus, FWHM, focusing efficiency and Strehl ratio. Writes `lens.json`, `rho_lens.npz` (layout) and figures. |
 | `python evaluate.py <run prefixes> [--shifts ...]` | Fair comparison of finished runs | Re-evaluates binary designs at `verify_order` with exact edge shifts. Writes `robustness_eval.json` per run plus a summary. |
+
+## C2. Materials and self-test
+
+| Command | When | Notes |
+|---|---|---|
+| `python tools/fetch_materials.py [--from <dir\|zip>]` | Once, before using tabulated materials | Downloads the refractiveindex.info database (CC0, about 30 MB) from GitHub into `materials/refractiveindex.info-database/` (git-ignored). `--from` installs it from a copy you already have. The agent tells the user before downloading. |
+| `python tools/fetch_materials.py --search <text>` / `--show <shelf/book/page> --lam λ1 λ2` / `--where` | To choose a data set | Lists the pages; prints range, REFERENCES, COMMENTS and n, k. Use it in a config as `{"material": "rii:<shelf/book/page>"}`. Interpolation is PCHIP (k ≥ 0) and there is no extrapolation outside the data range. |
+| `python tools/selftest.py [--full] [--keep]` | After `setup`, after updating torch/torcwa/numpy, before a release | Reproduces the reference numbers of the worked example (`tools/selftest_reference.json`) on the CPU: the robust grating re-evaluation, the 8-level supercell and the NA 0.5 metalens (about 1 min). `--full` adds a short optimization from scratch (3–5 min). Outputs are named `*_selftest` and removed at the end. The exit code is 0 when every check passes. |
 
 ## D. Validation and figures
 

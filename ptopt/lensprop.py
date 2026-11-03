@@ -44,7 +44,8 @@ class VectorASM:
         self.x = (np.arange(N) - N // 2) * dx
         kx = 2 * math.pi * np.fft.fftfreq(N, d=dx)
         KX, KY = np.meshgrid(kx, kx, indexing="ij")
-        prop = (KX ** 2 + KY ** 2) < self.k ** 2
+        # strict margin: drop grazing waves (kz < 0.01 k); a grid point at exactly k (k / dk integer) made E_z blow up
+        prop = (KX ** 2 + KY ** 2) < self.k ** 2 * (1 - 1e-4)
         self.ix, self.iy = np.nonzero(prop)
         self.kx, self.ky = KX[prop], KY[prop]
         self.kz = np.sqrt(self.k ** 2 - self.kx ** 2 - self.ky ** 2)

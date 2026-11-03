@@ -15,7 +15,7 @@ source "$VENV/bin/activate"
 pip install --upgrade pip
 if [ -n "${TORCH_INDEX:-}" ]; then pip install --upgrade "${TORCH_SPEC:-torch}" --index-url "$TORCH_INDEX"
 else pip install --upgrade "${TORCH_SPEC:-torch}"; fi
-pip install "numpy<2.3" scipy matplotlib
+pip install "numpy<2.3" scipy matplotlib pyyaml   # pyyaml: refractiveindex.info database files
 pip install --no-deps torcwa          # RCWA solver (LGPL); --no-deps keeps the torch build chosen above
 echo "${MODULES:-}" > "$VENV/.modules"
 python -c "import torch, torcwa; print('torch', torch.__version__, '| cuda build', torch.version.cuda, '| cuda available', torch.cuda.is_available())"

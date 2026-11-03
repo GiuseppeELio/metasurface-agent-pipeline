@@ -55,12 +55,24 @@ if a.crop_cells:
     lay = lay[c0 * npx:(c0 + nc) * npx, c0 * npx:(c0 + nc) * npx]
     Nc = nc
 D = Nc * P; R = min(D, L["diameter_um"]) / 2
+
+def _index(spec, lam_nm):
+    """Real index of a material spec at the design wavelength: constant n, a materials/*.txt table or a
+    refractiveindex.info entry ("rii:..."), resolved with the same code as the optimizer (k is ignored here)."""
+    spec = spec or {"n": 1.0}
+    if "material" in spec:
+        import sys as _s
+        _s.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from ptopt.materials import refractive_index
+        return float(refractive_index(spec, lam_nm).real)
+    return complex(spec.get("n", 1.0)).real
+
 lam = L["wavelength_um"]; f = L["focal_um"]
 h = L["layer"]["thickness_nm"] / 1000.0
-n_core = complex(L["layer"]["core"].get("n", 1.0)).real
-n_bg = complex(L["layer"].get("background", {"n": 1.0}).get("n", 1.0)).real
-n_in = (L["substrate"] or {"n": 1.0})["n"]
-n_out = (L["superstrate"] or {"n": 1.0})["n"]
+n_core = _index(L["layer"]["core"], lam * 1000.0)
+n_bg = _index(L["layer"].get("background", {"n": 1.0}), lam * 1000.0)
+n_in = _index(L["substrate"], lam * 1000.0)
+n_out = _index(L["superstrate"], lam * 1000.0)
 if L.get("illumination") == "from_superstrate":
     n_in, n_out = n_out, n_in
 # downsample the 5-nm layout to the MaterialGrid sampling (area average -> gray fill at the edges)

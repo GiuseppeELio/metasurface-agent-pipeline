@@ -69,14 +69,26 @@ class Problem:
         return sim
 
     def fom(self, rho, return_details=False):
-        """Mean FoM over wavelengths (differentiable)."""
+        """FoM over wavelengths (differentiable): the mean, or a weighted sum if objective.wavelength_weights is set.
+
+        wavelength_weights (one per entry of wavelengths_nm) builds narrow-band objectives, e.g. for quasi-BIC or
+        other high-Q resonances: wavelengths_nm [1545, 1550, 1555] with weights [-0.5, 1, -0.5] rewards the response
+        at the centre and penalizes it at the neighbours (the resonance must be narrower than the spacing).
+        The weighted sum is divided by the sum of the positive weights, so 1 still means a perfect FoM.
+        """
         vals, details = [], []
         for i in range(len(self.wavelengths)):
             sim = self.build_sim(rho, i)
             f, d = self.objective(sim, self.ocfg(i))
             vals.append(f)
             details.append({"wavelength_nm": self.wavelengths[i], **d})
-        fom = torch.stack(vals).mean()
+        wts = self.cfg["objective"].get("wavelength_weights")
+        if wts:
+            assert len(wts) == len(vals), "objective.wavelength_weights must have one weight per wavelengths_nm entry"
+            assert any(w > 0 for w in wts), "objective.wavelength_weights needs at least one positive weight"
+            fom = sum(w * v for w, v in zip(wts, vals)) / sum(w for w in wts if w > 0)
+        else:
+            fom = torch.stack(vals).mean()
         return (fom, details) if return_details else fom
 
 
