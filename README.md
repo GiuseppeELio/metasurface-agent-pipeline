@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/logo.png" alt="metasurface-agent-pipeline logo" width="140">
+</p>
+
 # Agent-Driven Inverse Design Pipeline for Dielectric Metasurfaces
 
 `metasurface-agent-pipeline`: an agent-driven inverse-design pipeline for dielectric metasurfaces and metagratings.
