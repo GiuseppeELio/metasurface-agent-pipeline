@@ -1,0 +1,41 @@
+{
+ "label": "HPC-48c",
+ "date": "20261105-2100",
+ "tiers": [
+  4
+ ],
+ "machine": {
+  "host_os": "Linux 4.18.0-240.el8.x86_64",
+  "python": "3.11.17",
+  "machine": "x86_64",
+  "cpu": "Intel(R) Xeon(R) Platinum 8260 CPU @ 2.40GHz",
+  "logical_cpus": 48,
+  "ram_gb": 376.3,
+  "slurm_cpus": "1",
+  "torch_error": "No module named 'torch'",
+  "numpy": "2.4.6",
+  "torcwa": null,
+  "meep": "1.35.0",
+  "nvidia_smi": ""
+ },
+ "t4_meep": {
+  "points": [
+   {
+    "np": 48,
+    "wall_s": 61.64,
+    "voxels": 2014848,
+    "meep_time": 50.33,
+    "T_total": [
+     0.3876,
+     0.6449,
+     0.6729,
+     0.5534,
+     0.679,
+     0.8872,
+     0.8648
+    ]
+   }
+  ]
+ },
+ "total_wall_s": 61.6
+}

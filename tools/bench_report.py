@@ -20,10 +20,22 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("files", nargs="+")
     ap.add_argument("--out", default="runs/bench_report")
+    ap.add_argument("--rename", action="append", default=[], metavar="OLD=NEW",
+                    help="relabel a file's machine, e.g. to merge a GPU-node and a CPU-node run of one cluster")
     A = ap.parse_args()
-    D = []
-    for f in A.files:
-        d = json.loads(Path(f).read_text()); d["_file"] = f; D.append(d)
+    ren = dict(r.split("=", 1) for r in A.rename)
+    D, by = [], {}
+    for f in A.files:                 # files with the same label are merged (e.g. tiers 0-3 and tier 4 run separately)
+        d = json.loads(Path(f).read_text()); d["_file"] = f; d["label"] = ren.get(d["label"], d["label"])
+        if d["label"] in by:
+            e = by[d["label"]]
+            for k, v in d.items():
+                if k.startswith("t") and k[1:2].isdigit():
+                    e[k] = v
+            if d.get("machine", {}).get("meep"):
+                e.setdefault("machine", {})["meep_node"] = f"{d['machine'].get('cpu')} ({d['machine'].get('logical_cpus')} cpus)"
+        else:
+            by[d["label"]] = d; D.append(d)
     out = Path(A.out); out.mkdir(parents=True, exist_ok=True)
     ref = D[0]
     rows, summ = [], []
@@ -110,7 +122,10 @@ def main():
                 ax[1].plot(n, w[0] / w / n, "o-", color=f"C{i}", label=d["label"])
         ax[0].set(xscale="log", yscale="log", xlabel="MPI processes", ylabel="wall time (min)", title="T4: Meep strip, 40 px/um")
         ax[1].set(xscale="log", xlabel="MPI processes", ylabel="parallel efficiency", ylim=(0, 1.1), title="strong scaling")
-        for a in ax: a.legend(fontsize=7); a.grid(alpha=0.3, which="both")
+        for a in ax:
+            if a.get_legend_handles_labels()[0]:
+                a.legend(fontsize=7)
+            a.grid(alpha=0.3, which="both")
         fig.tight_layout(); fig.savefig(out / "bench_meep_scaling.png", dpi=170); plt.close(fig)
     print("[bench_report] wrote", out)
 

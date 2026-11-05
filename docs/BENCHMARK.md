@@ -58,10 +58,10 @@ One GPU job for tiers 0–3, then one CPU job for tier 4. Tier 4 runs inside the
 with np = the job's MPI ranks.
 
 ```bash
-echo "tools/benchmark.py --label HPC-GPU --tiers 0 1 2 3 --keep-lens" > sweeps/bench_gpu.txt
+echo "tools/benchmark.py --label HPC --tiers 0 1 2 3 --keep-lens" > sweeps/bench_gpu.txt
 echo "array sweeps/bench_gpu.txt" > queue/bench_gpu.req
 # when it has finished:
-echo "tools/benchmark.py --label HPC-CPU --tiers 4" > sweeps/bench_meep.txt
+echo "tools/benchmark.py --label HPC --tiers 4" > sweeps/bench_meep.txt
 echo "meep sweeps/bench_meep.txt" > queue/bench_meep.req
 ```
 
@@ -74,7 +74,8 @@ into one folder and run:
 python tools/bench_report.py hpc/benchmark.json ws/benchmark.json win/benchmark.json --out runs/bench_report
 ```
 
-The first file is the reference for the agreement columns: the maximum phase difference of the RCWA coefficients and
+Files with the same label are merged into one row. This covers tiers 0–3 and tier 4 run separately on one machine;
+`--rename OLD=NEW` relabels a file. The first file is the reference for the agreement columns: the maximum phase difference of the RCWA coefficients and
 the efficiency difference of the mini lens. The outputs are:
 
 - `bench_table.md`;
@@ -83,14 +84,28 @@ the efficiency difference of the mini lens. The outputs are:
 - `bench_meep_scaling.png`;
 - `bench_summary.json`.
 
-## Expected run times (indicative)
+Agreement is checked on deterministic quantities only: the RCWA coefficients of tier 1 and the lens efficiencies of
+tier 3. On the reference node, CPU and GPU give the same RCWA coefficients to 1e-12. The figure of merit after 40
+optimization iterations (tier 2) depends on floating-point details: CPU and GPU follow different optimization paths.
+Tier 2 is therefore a timing measure only.
 
-| Tier | 2-core cloud VM (measured) | V100 node (measured) | 16-core workstation |
-|---|---|---|---|
-| 0 | 24 s | | about 20 s |
-| 1 | 0.20 / 1.0 / 4.5 s per simulation (orders 5 / 7 / 9) | 0.7 s (order 9), 1.5 s (order 11) on the GPU | |
-| 2 | 1.7 s per iteration | | |
-| 3 | about 35 min at order 9 | about 10 min | 10–20 min |
-| 4 | – | | np = 1: about 15–20 min |
+## Reference timings
 
-Fill the empty cells with the measured values: they are what the paper reports.
+Measured on 2026-11-05:
+
+- HPC: one NVIDIA V100S-PCIE-32GB with 8 cores of a Xeon Platinum 8260 for tiers 0–3, and one 48-core node of the
+  same CPU for tier 4.
+- Cloud VM: 2 vCPUs, development test only, tier 3 at order 5.
+
+| Tier | HPC (V100S + 8 cores; Meep: 48 cores) | 2-vCPU cloud VM |
+|---|---|---|
+| 0 self-test | 20 s | 24 s |
+| 1 RCWA, s per simulation at orders 9 / 11 | CPU 1.38 / 3.53, GPU 0.72 / 1.48 | – |
+| 2 topology optimization, s per iteration | CPU 0.54, GPU 0.33 | CPU 1.65 |
+| 3 mini achromatic lens | 6.6 min (GPU) | – |
+| 4 Meep strip | 1.0 min at np = 48 | – |
+
+The whole benchmark on the HPC node took 11 min for tiers 0–3, plus 1.0 min for tier 4. CPU and GPU RCWA
+coefficients agree to 1e-12. The HPC files are in `docs/benchmark/`: compare your machine with
+`python tools/bench_report.py docs/benchmark/HPC_gpu.json docs/benchmark/HPC_meep.json runs/bench_<yours>/benchmark.json --rename HPC-V100=HPC --rename HPC-48c=HPC`.
+Results from other machines will be added here.
