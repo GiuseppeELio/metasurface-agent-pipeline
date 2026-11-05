@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below, together with the accompanying paper (see README)."
+title: "metasurface-agent-pipeline: agent-driven inverse design of dielectric metasurfaces"
+type: software
+authors:
+  - family-names: Lio
+    given-names: Giuseppe Emanuele
+    orcid: "https://orcid.org/0000-0002-8925-7202"
+    affiliation: University of Pisa
+doi: 10.5281/zenodo.23982523
+repository-code: "https://codeberg.org/GiuseppeELio/metasurface-agent-pipeline"
+repository: "https://github.com/GiuseppeELio/metasurface-agent-pipeline"
+license: MIT
+keywords:
+  - metasurfaces
+  - metagratings
+  - inverse design
+  - topology optimization
+  - RCWA
+  - FDTD
+  - nanophotonics
+  - AI agents

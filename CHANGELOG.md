@@ -4,7 +4,39 @@ All notable changes to this project are documented here. The pipeline is improve
 says what changed and why, so that results obtained with earlier versions can be traced.
 
 
-## [0.2.0] - unreleased (continuous improvement after the initial release)
+## [0.3.0] - unreleased
+
+- **Cross-machine benchmark**: `tools/benchmark.py` and `tools/bench_report.py`, documented in `docs/BENCHMARK.md`.
+  - Five tiers: self-test, RCWA kernel vs Fourier order (CPU and GPU), topology-optimization iteration time,
+    mini achromatic lens end to end, and Meep MPI scaling.
+  - Each tier stores its timing and its physical result, so laptops, workstations and HPC nodes can be compared for
+    speed and for agreement.
+  - Tiers 0–3 run on native Windows (no WSL).
+  - `AGENTS.md` onboarding step 6c: run it once per machine; the agent uses the numbers to estimate run times and
+    to choose the device.
+- **Large-aperture achromatic metalenses** (TiO2 on SiO2, 700–1000 nm, D = 400 µm), new tools:
+  - `tools/tio2_lut.py`: multi-wavelength library of fourfold-symmetric pillars (circle, square, ring, square ring,
+    cross) with fabrication rules. |t|² is a power fraction (TORCWA `power_norm=True`, checked against the
+    silica/air Fresnel coefficient).
+  - `tools/achro_tio2.py`: dispersion-engineered design on a fine radial grid, and an optional filter that drops atoms
+    with sharp lattice resonances. Focusing uses a band-limited vector angular spectrum, so apertures of hundreds of µm
+    take seconds. Efficiency and Strehl are reported also at a common focal plane, which matters at low Fresnel number.
+  - `tools/achro_lens.py`: shared design core.
+- **Full-diameter Meep check** of rotationally symmetric lenses: `validation/meep_achro_strip.py` and
+  `validation/achro_strip_post.py`.
+  - A 3-D strip through the axis with the real pillars, run in segments and in two polarizations. The circular
+    aperture field is rebuilt from the radial and azimuthal responses.
+  - Lorentz fits of tabulated n,k (max Δn 3e-4).
+  - The substrate is non-dispersive inside the PML layers: a Lorentzian medium in the PML made long runs diverge.
+- **Optical constants shipped as tables** (refractiveindex.info, CC0): `materials/TiO2_ALD_Siefke.txt` and
+  `materials/SiO2_Malitson.txt`.
+
+## [0.2.1] - 2026-11-05
+
+- First archived release: Zenodo, doi:10.5281/zenodo.23982524 (all versions: doi:10.5281/zenodo.23982523).
+- Logo in the README and Zenodo metadata (`.zenodo.json`); no code changes since 0.2.0.
+
+## [0.2.0] - 2026-11-03 (continuous improvement after the initial release)
 
 - **Narrow-band objectives**: optional `objective.wavelength_weights` (`ptopt/problem.py`).
   - Use it for quasi-BIC and other high-Q designs.

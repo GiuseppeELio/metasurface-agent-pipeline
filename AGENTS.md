@@ -79,6 +79,12 @@ Check whether `hpc/site.env` exists. If it does not, ask the user, one short blo
    list line on the login node). Configs can then use `{"material": "rii:<shelf>/<book>/<page>"}`; find pages with
    `--search`, inspect them with `--show` (see `materials/README.md`). Prefer thin-film data for deposited layers,
    check that the data range covers the whole band, and always report the data sets and references you used.
+6c. **Know the machine (optional, recommended once per machine).** Offer `python tools/benchmark.py --label <name>`
+   (tiers 0-3 take about 10-40 min; add tier 4 after Meep is installed, see `docs/BENCHMARK.md`). Keep the resulting
+   `runs/bench_*/benchmark.json`. Use its numbers to estimate run times before submitting work, for example seconds
+   per RCWA simulation at a given order, or seconds per optimization iteration. Use them also to choose the device:
+   on consumer GPUs (GeForce RTX) RCWA libraries are often faster on the CPU, while topology optimization is faster
+   on the GPU. Quote the estimate to the user when asking for compute.
 7. **Meep (FDTD validation).** Explain this to the user in a few lines, then let them decide:
    - **What it is for.** Meep is an independent FDTD solver. The pipeline uses it to cross-check every design
      reported as final (section 4.C). Optimization does not need it.

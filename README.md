@@ -4,6 +4,8 @@
 
 # Agent-Driven Inverse Design Pipeline for Dielectric Metasurfaces
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23982523.svg)](https://doi.org/10.5281/zenodo.23982523)
+
 `metasurface-agent-pipeline`: an agent-driven inverse-design pipeline for dielectric metasurfaces and metagratings.
 The user describes the target in plain language. An AI coding agent turns it into a configuration, runs
 GPU-accelerated, differentiable RCWA topology optimization on a local machine or on a SLURM cluster,
@@ -97,6 +99,7 @@ git clone https://codeberg.org/GiuseppeELio/metasurface-agent-pipeline.git && cd
 bash hpc/setup_env.sh                     # creates .venv with torch, torcwa, numpy, scipy, matplotlib, pyyaml
 source .venv/bin/activate
 python tools/selftest.py                  # ~1 min on CPU: reproduces reference numbers of the worked example
+python tools/benchmark.py --label mypc     # optional: timing benchmark of this machine (docs/BENCHMARK.md)
 python run_topopt.py --config configs/metaatom_template.json --iters 30 --order 5 5 --device auto
 ```
 
@@ -135,7 +138,8 @@ The watcher only executes those four sub-commands and rejects shell metacharacte
 ```
 ptopt/            problem definition, materials, objectives, morphology tools
 configs/          example configurations (JSON)
-tools/            sweep generators, materials database (fetch_materials.py), self-test (selftest.py)
+tools/            sweep generators, materials database (fetch_materials.py), self-test (selftest.py),
+                  achromatic-lens tools (tio2_lut.py, achro_tio2.py), cross-machine benchmark (benchmark.py)
 validation/       Meep FDTD validation
 hpc/              bridge.sh, environment setup, generic SLURM job templates, site.env.example
 paper/            figures of the accompanying paper (optional; not needed to use the pipeline)
@@ -145,9 +149,16 @@ AGENTS.md         instructions for AI agents working with this repository
 
 ## Citation
 
-If you use this pipeline, please cite TORCWA (Kim & Lee 2023) and the accompanying paper (reference to be added).
-If you use optical constants from the refractiveindex.info database, cite it as well (M. N. Polyanskiy, *Sci. Data* 11, 94, 2024)
-together with the original source of each data set.
+If you use this pipeline, please cite:
+
+- the software: G. E. Lio, *metasurface-agent-pipeline: agent-driven inverse design of dielectric metasurfaces*,
+  Zenodo, [doi:10.5281/zenodo.23982523](https://doi.org/10.5281/zenodo.23982523). This DOI covers all versions;
+  each release also has its own DOI, listed on the Zenodo page. See also `CITATION.cff`.
+- the accompanying paper (arXiv, reference to be added);
+- TORCWA: C. Kim and B. Lee, *Comput. Phys. Commun.* **282**, 108552 (2023).
+
+If you use optical constants from the refractiveindex.info database, cite it as well (M. N. Polyanskiy, *Sci. Data*
+11, 94, 2024), together with the original source of each data set.
 
 ## License
 
