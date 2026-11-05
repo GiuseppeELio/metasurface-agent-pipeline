@@ -116,6 +116,31 @@ Hardware:
 - **CPU:** works everywhere and is fine for small problems.
 - **Apple-silicon GPUs (MPS):** not supported. PyTorch has no complex `linalg.eig` on MPS; use the CPU.
 
+## Benchmark your machine
+
+`tools/benchmark.py` tells you what to expect from your hardware before you start a design. It runs the same small
+workloads everywhere:
+
+- self-test;
+- RCWA cost versus Fourier order, on CPU and GPU;
+- seconds per topology-optimization iteration;
+- a complete mini achromatic lens;
+- Meep scaling with the number of MPI processes.
+
+It writes `runs/bench_<label>_<date>/benchmark.json`. Tiers 0–3 run on Linux, macOS and native Windows (no WSL) in
+about 10–40 min; the Meep tier needs Linux or macOS.
+
+```bash
+python tools/benchmark.py --label mypc
+python tools/bench_report.py runs/bench_*/benchmark.json other/benchmark.json   # compare machines: table + figures
+```
+
+The agent uses these numbers to estimate run times and to choose between CPU, GPU and cluster. On consumer GPUs
+(GeForce RTX), RCWA libraries are often faster on the CPU, because RCWA works in double precision, while topology
+optimization benefits from the GPU. Instructions for each platform and for HPC through the bridge are in
+[`docs/BENCHMARK.md`](docs/BENCHMARK.md). Results from other machines are welcome: open an issue with your
+`benchmark.json`.
+
 ## Agent mode (local or HPC)
 
 ```bash
