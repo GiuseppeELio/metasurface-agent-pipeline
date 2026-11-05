@@ -28,6 +28,8 @@ says what changed and why, so that results obtained with earlier versions can be
     aperture field is rebuilt from the radial and azimuthal responses.
   - Lorentz fits of tabulated n,k (max Δn 3e-4).
   - The substrate is non-dispersive inside the PML layers: a Lorentzian medium in the PML made long runs diverge.
+- **Removed `paper/`**. The figure script of the accompanying paper needs the authors' own run set and is not
+  needed to use the pipeline. The figures belong to the paper; the worked example stays in `examples/`.
 - **Optical constants shipped as tables** (refractiveindex.info, CC0): `materials/TiO2_ALD_Siefke.txt` and
   `materials/SiO2_Malitson.txt`.
 

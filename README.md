@@ -64,7 +64,7 @@ Validation: [MIT Meep](https://meep.readthedocs.io) (FDTD).
 | Optical constants from the refractiveindex.info database (download, search, inspect) | `tools/fetch_materials.py` | `{"material": "rii:<shelf/book/page>"}` in any config |
 | Regression test against the worked example | `tools/selftest.py` | PASS/FAIL per check, exit code |
 | Independent FDTD runs (periodic designs / metalens) | `validation/meep_validate.py`, `validation/meep_lens.py` | `meep_res<R>.json`, `meep_lens_res<R>.json` |
-| Figures of the accompanying paper (optional, for the authors' run set) | `paper/make_figures.py` | `paper/figures/` |
+| Cross-machine benchmark (timing and agreement) | `tools/benchmark.py`, `tools/bench_report.py` | `benchmark.json`, table and figures |
 
 Every run reports:
 
@@ -167,7 +167,6 @@ tools/            sweep generators, materials database (fetch_materials.py), sel
                   achromatic-lens tools (tio2_lut.py, achro_tio2.py), cross-machine benchmark (benchmark.py)
 validation/       Meep FDTD validation
 hpc/              bridge.sh, environment setup, generic SLURM job templates, site.env.example
-paper/            figures of the accompanying paper (optional; not needed to use the pipeline)
 examples/         worked example: finished runs of the silicon case study at 1550 nm
 AGENTS.md         instructions for AI agents working with this repository
 ```

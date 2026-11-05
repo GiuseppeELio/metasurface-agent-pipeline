@@ -93,7 +93,6 @@ python run_topopt.py --config <cfg.json> [--device auto|cuda|cpu] [--iters N] [-
 | `python validation/compare_fields.py --run runs/<dir>` | Field comparison | Near-field maps, beam propagation and per-order efficiencies (% of incident power) for both solvers. |
 | `python validation/validate.py plan --runs ... --level quick\|full --tag T [--enqueue]` | Validation stage, step 1 | Writes the GPU list and the Meep list for one round, from `configs/validation_policy.json`, and estimates the Meep time. |
 | `python validation/validate.py report --runs ... [--figures]` | Validation stage, step 2 | Verdict per design, edge shift and polarization (`agree`, `marginal`, `inconclusive`, `disagree`), plus the rank agreement. Writes `validation.json`. |
-| `python paper/make_figures.py` | After the runs | Rebuilds the figures in `paper/figures/` from `runs/`. |
 
 ## E. Typical sessions
 
