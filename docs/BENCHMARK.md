@@ -91,21 +91,35 @@ Tier 2 is therefore a timing measure only.
 
 ## Reference timings
 
-Measured on 2026-11-05:
+Measured with v0.3.0–0.3.1 on 5–6 November 2026.
 
-- HPC: one NVIDIA V100S-PCIE-32GB with 8 cores of a Xeon Platinum 8260 for tiers 0–3, and one 48-core node of the
-  same CPU for tier 4.
-- Cloud VM: 2 vCPUs, development test only, tier 3 at order 5.
+| | HPC node | Workstation A | Workstation B | Mac mini M4 |
+|---|---|---|---|---|
+| CPU (threads used by torch) | Xeon Platinum 8260, 8 of 48 cores | Core i7-14700KF (14) | 2× Xeon Silver 4310 (24) | Apple M4, 4P + 6E cores (4) |
+| GPU | Tesla V100S 32 GB | GeForce RTX 3080 10 GB | NVIDIA L4 24 GB | not used (NA)ᵇ |
+| OS | Linux (SLURM) | Windows + WSL2 | Windows Server 2022: tiers 0–3 native, Meep in WSL2 | macOS 26, 16 GB |
+| T0 self-test | 20 s | 18 s | 56 s | 20 s |
+| T1 RCWA, s/simulation, order 9 (CPU / GPU) | 1.38 / **0.72** | **1.18** / 1.45 | 2.09 / **1.69** | 2.16 / NA |
+| T1 RCWA, s/simulation, order 11 (CPU / GPU) | 3.53 / **1.48** | **3.19** / 3.85 | **4.59** / 4.62 | 6.45 / NA |
+| T2 topology optimization, s/iteration (CPU / GPU) | 0.54 / **0.33** | **0.44** / 0.51 | 0.68 / **0.49** | 0.56 / NA |
+| T3 mini achromatic lens (device chosen) | 6.6 min (GPU) | 9.8 min (CPU) | 15.1 min (GPU) | 17.8 min (CPU) |
+| T4 Meep strip, fastest run | 1.0 min, 48 processes | 3.8 min, 16 processes | 10.2 min, 8 processesᵃ (1 process: 14.0 min) | 2.8 min, 2 processes (1: 3.3 min; 4: 4.2; 8: 14.9) |
 
-| Tier | HPC (V100S + 8 cores; Meep: 48 cores) | 2-vCPU cloud VM |
-|---|---|---|
-| 0 self-test | 20 s | 24 s |
-| 1 RCWA, s per simulation at orders 9 / 11 | CPU 1.38 / 3.53, GPU 0.72 / 1.48 | – |
-| 2 topology optimization, s per iteration | CPU 0.54, GPU 0.33 | CPU 1.65 |
-| 3 mini achromatic lens | 6.6 min (GPU) | – |
-| 4 Meep strip | 1.0 min at np = 48 | – |
+- **Agreement.** All machines reproduce the reference numbers:
+  - self-test 3/3 PASS;
+  - tier-1 RCWA coefficients equal to 1e-12, CPU and GPU alike;
+  - tier-3 lens efficiencies equal to four decimals;
+  - tier-4 Meep transmissions equal to four decimals.
+- **Tier 2.** The figure of merit after 40 iterations differs between devices: it is a timing measure only.
+- **Mac mini M4.**ᵇ The Apple GPU is not used: TORCWA needs a complex double-precision eigensolver, which the
+  PyTorch MPS backend does not provide. PyTorch uses the 4 performance cores. Meep is fastest with 1–2 processes and
+  slows down beyond the performance cores (4 processes: 4.2 min; 8 processes: 14.9 min).
+- **Workstation B, tier 4.**ᵃ Measured before the benchmark set `OMP_NUM_THREADS=1`.
+- **Meep scaling.** The tier-4 problem is small (2.0 M voxels, one cell thick in y), so beyond a few MPI processes
+  communication dominates. The Mac shows the same flat or worsening curve with one OpenMP thread per process. For
+  production runs, which are 10–30 times larger, the cluster scaled well up to 48 processes. Tier 4 compares single
+  machines; it is not a scaling study of the full problem.
 
-The whole benchmark on the HPC node took 11 min for tiers 0–3, plus 1.0 min for tier 4. CPU and GPU RCWA
-coefficients agree to 1e-12. The HPC files are in `docs/benchmark/`: compare your machine with
-`python tools/bench_report.py docs/benchmark/HPC_gpu.json docs/benchmark/HPC_meep.json runs/bench_<yours>/benchmark.json --rename HPC-V100=HPC --rename HPC-48c=HPC`.
-Results from other machines will be added here.
+Reference files: `docs/benchmark/*.json`. They are the original files, with only the label changed so that the GPU and
+Meep runs of one machine merge into one row. Compare your machine with
+`python tools/bench_report.py docs/benchmark/*.json runs/bench_<yours>/benchmark.json`.

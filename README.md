@@ -141,6 +141,27 @@ optimization benefits from the GPU. Instructions for each platform and for HPC t
 [`docs/BENCHMARK.md`](docs/BENCHMARK.md). Results from other machines are welcome: open an issue with your
 `benchmark.json`.
 
+### Reference results
+
+Same workloads on four machines, from v0.3.0–0.3.1. Details and all numbers are in [`docs/BENCHMARK.md`](docs/BENCHMARK.md).
+
+| | HPC node: V100S + Xeon 8260 | Workstation A: RTX 3080 + i7-14700KF | Workstation B: L4 + 2× Xeon 4310 | Mac mini M4 (CPU only) |
+|---|---|---|---|---|
+| RCWA, s per simulation, order 11 (CPU / GPU) | 3.53 / **1.48** | **3.19** / 3.85 | **4.59** / 4.62 | 6.45 / NA |
+| Topology optimization, s per iteration (CPU / GPU) | 0.54 / **0.33** | **0.44** / 0.51 | 0.68 / **0.49** | 0.56 / NA |
+| Mini achromatic lens, end to end | 6.6 min | 9.8 min | 15.1 min | 17.8 min |
+| Meep strip (MPI processes) | 1.0 min (48) | 3.8 min (16) | 10.2 min (8) | 2.8 min (2) |
+
+All machines give the same physical results:
+
+- RCWA coefficients agree to 1e-12;
+- lens efficiencies and Meep transmissions agree to four decimals.
+
+On consumer GPUs and on the L4, double-precision RCWA runs about as fast as, or slower than, a recent desktop CPU.
+Apple-silicon GPUs are not used, because the solver needs complex double precision.
+
+![Benchmark: time per tier](docs/benchmark/bench_times.png)
+
 ## Agent mode (local or HPC)
 
 ```bash

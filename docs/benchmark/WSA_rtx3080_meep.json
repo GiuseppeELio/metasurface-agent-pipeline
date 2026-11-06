@@ -1,0 +1,42 @@
+{
+ "label": "WS-A RTX 3080",
+ "date": "20261106-0815",
+ "tiers": [
+  4
+ ],
+ "machine": {
+  "host_os": "Linux 6.18.58.1-microsoft-standard-WSL2",
+  "python": "3.11.18",
+  "machine": "x86_64",
+  "cpu": "Intel(R) Core(TM) i7-14700KF",
+  "logical_cpus": 28,
+  "ram_gb": 62.7,
+  "slurm_cpus": null,
+  "torch_error": "No module named 'torch'",
+  "numpy": "2.4.6",
+  "torcwa": null,
+  "meep": "1.35.0",
+  "nvidia_smi": "NVIDIA GeForce RTX 3080, 610.60, 10240 MiB"
+ },
+ "t4_meep": {
+  "points": [
+   {
+    "np": 16,
+    "wall_s": 228.79,
+    "voxels": 2014848,
+    "meep_time": 50.33,
+    "T_total": [
+     0.3876,
+     0.6449,
+     0.6729,
+     0.5534,
+     0.679,
+     0.8872,
+     0.8648
+    ]
+   }
+  ]
+ },
+ "total_wall_s": 228.8,
+ "original_label": "WS-RTX3080-28t"
+}

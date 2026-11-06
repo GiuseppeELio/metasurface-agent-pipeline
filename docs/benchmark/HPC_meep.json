@@ -1,5 +1,5 @@
 {
- "label": "HPC-48c",
+ "label": "HPC V100S",
  "date": "20261105-2100",
  "tiers": [
   4
@@ -37,5 +37,6 @@
    }
   ]
  },
- "total_wall_s": 61.6
+ "total_wall_s": 61.6,
+ "original_label": "HPC-48c"
 }

@@ -1,5 +1,5 @@
 {
- "label": "HPC-V100",
+ "label": "HPC V100S",
  "date": "20261105-2027",
  "tiers": [
   0,
@@ -878,5 +878,6 @@
   ],
   "n_atoms": 20
  },
- "total_wall_s": 665.8
+ "total_wall_s": 665.8,
+ "original_label": "HPC-V100"
 }

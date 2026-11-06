@@ -4,6 +4,14 @@ All notable changes to this project are documented here. The pipeline is improve
 says what changed and why, so that results obtained with earlier versions can be traced.
 
 
+## [0.3.1] - unreleased
+
+- **Benchmark, tier 4:** local Meep runs now set `OMP_NUM_THREADS=1` (unless already set) and record it. Conda-forge
+  Meep is built with OpenMP, and without this every MPI process could open one thread per core and oversubscribe
+  the CPU.
+- **Reference results** from four machines in `docs/benchmark/` and `docs/BENCHMARK.md`: HPC V100S node, two
+  workstations (RTX 3080, L4) and a Mac mini M4 (CPU only). Summary table and figure in the README.
+
 ## [0.3.0] - unreleased
 
 - **Cross-machine benchmark**: `tools/benchmark.py` and `tools/bench_report.py`, documented in `docs/BENCHMARK.md`.

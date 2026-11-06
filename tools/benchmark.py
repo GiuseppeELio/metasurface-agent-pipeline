@@ -163,13 +163,18 @@ def tier4(R, A, tmp):
     if MPI_SIZE > 1:                               # already inside mpirun (HPC job line): one point, all ranks run Meep
         import runpy
         t = time.time(); sys.argv = STRIP + ["--tag", f"np{MPI_SIZE}"]
+        if os.environ.get("OMP_NUM_THREADS") not in (None, "1"):
+            print("[benchmark] note: OMP_NUM_THREADS =", os.environ["OMP_NUM_THREADS"], flush=True)
         runpy.run_path(STRIP[0], run_name="__main__")
-        pts.append(dict(np=MPI_SIZE, wall_s=round(time.time() - t, 2)))
+        pts.append(dict(np=MPI_SIZE, wall_s=round(time.time() - t, 2), omp_threads=os.environ.get("OMP_NUM_THREADS")))
     else:
         mpirun = shutil.which(A.mpirun) or A.mpirun
+        # one thread per MPI process (as hpc/slurm/job_meep.slurm does): conda-forge Meep is built with OpenMP and would
+        # otherwise start one thread per core in every process, oversubscribing the CPU and hiding the MPI scaling
+        env = dict(os.environ, OMP_NUM_THREADS=os.environ.get("OMP_NUM_THREADS", "1"))
         for n in A.np:
-            rc, dt = run([mpirun, "-np", str(n), sys.executable, "-u", *STRIP, "--tag", f"np{n}"], f"bench_t4_np{n}.out")
-            pts.append(dict(np=n, wall_s=dt, rc=rc))
+            rc, dt = run([mpirun, "-np", str(n), sys.executable, "-u", *STRIP, "--tag", f"np{n}"], f"bench_t4_np{n}.out", env=env)
+            pts.append(dict(np=n, wall_s=dt, rc=rc, omp_threads=env["OMP_NUM_THREADS"]))
     for p in pts:
         try:
             j = json.loads((RUNS / "t4_meep_bench" / f"meep_strip_x_res40_np{p['np']}.json").read_text())
