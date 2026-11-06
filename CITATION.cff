@@ -7,6 +7,8 @@ authors:
     given-names: Giuseppe Emanuele
     orcid: "https://orcid.org/0000-0002-8925-7202"
     affiliation: University of Pisa
+version: 0.3.0
+date-released: "2026-11-06"
 doi: 10.5281/zenodo.23982523
 repository-code: "https://codeberg.org/GiuseppeELio/metasurface-agent-pipeline"
 repository: "https://github.com/GiuseppeELio/metasurface-agent-pipeline"
@@ -20,3 +22,25 @@ keywords:
   - FDTD
   - nanophotonics
   - AI agents
+preferred-citation:
+  type: article
+  title: "An Agent-Driven, Cross-Validated Inverse-Design Pipeline for Dielectric Metasurfaces"
+  authors:
+    - family-names: Lio
+      given-names: Giuseppe Emanuele
+      orcid: "https://orcid.org/0000-0002-8925-7202"
+    - family-names: Caputo
+      given-names: Roberto
+    - family-names: Corso
+      given-names: Alain J.
+    - family-names: Pelizzo
+      given-names: Maria Guglielmina
+    - family-names: Ferraro
+      given-names: Antonio
+  year: 2026
+  journal: "arXiv preprint"
+  doi: 10.48550/arXiv.2611.08127
+  url: "https://arxiv.org/abs/2611.08127"
+  identifiers:
+    - type: other
+      value: "arXiv:2611.08127"

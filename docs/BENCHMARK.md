@@ -91,7 +91,7 @@ Tier 2 is therefore a timing measure only.
 
 ## Reference timings
 
-Measured with v0.3.0–0.3.1 on 5–6 November 2026.
+Measured with v0.3.0 (development snapshots) on 5–6 November 2026.
 
 | | HPC node | Workstation A | Workstation B | Mac mini M4 |
 |---|---|---|---|---|

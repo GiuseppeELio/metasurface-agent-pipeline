@@ -5,6 +5,7 @@
 # Agent-Driven Inverse Design Pipeline for Dielectric Metasurfaces
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23982523.svg)](https://doi.org/10.5281/zenodo.23982523)
+[![arXiv](https://img.shields.io/badge/arXiv-2611.08127-b31b1b.svg)](https://arxiv.org/abs/2611.08127)
 
 `metasurface-agent-pipeline`: an agent-driven inverse-design pipeline for dielectric metasurfaces and metagratings.
 The user describes the target in plain language. An AI coding agent turns it into a configuration, runs
@@ -143,7 +144,7 @@ optimization benefits from the GPU. Instructions for each platform and for HPC t
 
 ### Reference results
 
-Same workloads on four machines, from v0.3.0–0.3.1. Details and all numbers are in [`docs/BENCHMARK.md`](docs/BENCHMARK.md).
+Same workloads on four machines, from v0.3.0 (development snapshots). Details and all numbers are in [`docs/BENCHMARK.md`](docs/BENCHMARK.md).
 
 | | HPC node: V100S + Xeon 8260 | Workstation A: RTX 3080 + i7-14700KF | Workstation B: L4 + 2× Xeon 4310 | Mac mini M4 (CPU only) |
 |---|---|---|---|---|
@@ -199,7 +200,9 @@ If you use this pipeline, please cite:
 - the software: G. E. Lio, *metasurface-agent-pipeline: agent-driven inverse design of dielectric metasurfaces*,
   Zenodo, [doi:10.5281/zenodo.23982523](https://doi.org/10.5281/zenodo.23982523). This DOI covers all versions;
   each release also has its own DOI, listed on the Zenodo page. See also `CITATION.cff`.
-- the accompanying paper (arXiv, reference to be added);
+- the accompanying paper: G. E. Lio, R. Caputo, A. J. Corso, M. G. Pelizzo and A. Ferraro, *An Agent-Driven,
+  Cross-Validated Inverse-Design Pipeline for Dielectric Metasurfaces*, arXiv:2611.08127 (2026),
+  [doi:10.48550/arXiv.2611.08127](https://doi.org/10.48550/arXiv.2611.08127);
 - TORCWA: C. Kim and B. Lee, *Comput. Phys. Commun.* **282**, 108552 (2023).
 
 If you use optical constants from the refractiveindex.info database, cite it as well (M. N. Polyanskiy, *Sci. Data*
