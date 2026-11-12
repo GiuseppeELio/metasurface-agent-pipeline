@@ -212,6 +212,12 @@ If you use this pipeline, please cite:
 If you use optical constants from the refractiveindex.info database, cite it as well (M. N. Polyanskiy, *Sci. Data*
 11, 94, 2024), together with the original source of each data set.
 
+## Acknowledgements
+
+We acknowledge the CINECA award under the ISCRA initiative, for the availability of high-performance computing
+resources and support (project DENZMODE). The cluster results in this repository, including the benchmark reference
+runs, were obtained on CINECA systems.
+
 ## License
 
 MIT License, see [`LICENSE`](LICENSE).

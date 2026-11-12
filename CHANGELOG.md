@@ -4,7 +4,11 @@ All notable changes to this project are documented here. The pipeline is improve
 says what changed and why, so that results obtained with earlier versions can be traced.
 
 
-## [0.3.1] - unreleased
+## [Unreleased]
+
+- README: acknowledgement of the CINECA ISCRA award (project DENZMODE).
+
+## [0.3.1] - 2026-11-12
 
 - **Hybrid CPU/GPU eigensolver**: `METASURF_EIG_DEVICE=cpu` (`ptopt/device.py`, applied at `import ptopt`).
   - Only `torch.linalg.eig` of CUDA tensors runs on the CPU (LAPACK/MKL); everything else stays on the GPU.
