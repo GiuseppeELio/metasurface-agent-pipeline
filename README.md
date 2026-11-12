@@ -144,14 +144,14 @@ optimization benefits from the GPU. Instructions for each platform and for HPC t
 
 ### Reference results
 
-Same workloads on four machines, from v0.3.0 (development snapshots). Details and all numbers are in [`docs/BENCHMARK.md`](docs/BENCHMARK.md).
+Same workloads on five machines (v0.3.0–0.3.1). Details and all numbers are in [`docs/BENCHMARK.md`](docs/BENCHMARK.md).
 
-| | HPC node: V100S + Xeon 8260 | Workstation A: RTX 3080 + i7-14700KF | Workstation B: L4 + 2× Xeon 4310 | Mac mini M4 (CPU only) |
-|---|---|---|---|---|
-| RCWA, s per simulation, order 11 (CPU / GPU) | 3.53 / **1.48** | **3.19** / 3.85 | **4.59** / 4.62 | 6.45 / NA |
-| Topology optimization, s per iteration (CPU / GPU) | 0.54 / **0.33** | **0.44** / 0.51 | 0.68 / **0.49** | 0.56 / NA |
-| Mini achromatic lens, end to end | 6.6 min | 9.8 min | 15.1 min | 17.8 min |
-| Meep strip (MPI processes) | 1.0 min (48) | 3.8 min (16) | 10.2 min (8) | 2.8 min (2) |
+| | HPC node: V100S + Xeon 8260 | Leonardo node: A100 + Xeon 8358ᵃ | Workstation A: RTX 3080 + i7-14700KF | Workstation B: L4 + 2× Xeon 4310 | Mac mini M4 (CPU only) |
+|---|---|---|---|---|---|
+| RCWA, s per simulation, order 11 (CPU / GPU) | 3.53 / **1.48** | 2.71 / **1.00** | **3.19** / 3.85 | **4.59** / 4.62 | 6.45 / NA |
+| Topology optimization, s per iteration (CPU / GPU) | 0.54 / **0.33** | 0.36 / **0.24** | **0.44** / 0.51 | 0.68 / **0.49** | 0.56 / NA |
+| Mini achromatic lens, end to end | 6.6 min | 4.5 min | 9.8 min | 15.1 min | 17.8 min |
+| Meep strip (MPI processes) | 1.0 min (48) | 0.45 min (112) | 3.8 min (16) | 10.2 min (8) | 2.8 min (2) |
 
 All machines give the same physical results:
 
@@ -160,6 +160,10 @@ All machines give the same physical results:
 
 On consumer GPUs and on the L4, double-precision RCWA runs about as fast as, or slower than, a recent desktop CPU.
 Apple-silicon GPUs are not used, because the solver needs complex double precision.
+
+ᵃ With the eigenvalue problem on the CPU (`METASURF_EIG_DEVICE=cpu`), everything else on the GPU. With PyTorch's
+default the A100 was slower than the V100S (2.25 s at order 11). Mixing CPU and GPU in this way can pay off on any
+GPU node: see "Hybrid CPU/GPU placement" in `docs/BENCHMARK.md`.
 
 ![Benchmark: time per tier](docs/benchmark/bench_times.png)
 

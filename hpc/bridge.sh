@@ -69,7 +69,7 @@ case "$cmd" in
     [ "$EXEC_MODE" = "slurm" ] || { echo "push: local mode, nothing to do"; exit 0; }
     "${SSH[@]}" "mkdir -p ~/$REMOTE_DIR"
     rsync -az --delete -e "$RSYNC_E" --exclude '.git' --exclude '.DS_Store' --exclude 'runs/' --exclude 'logs/' \
-      --exclude 'queue/' --exclude 'hpc/site.env' --exclude '.venv/' --exclude '.meep-env/' --exclude '.mamba/' \
+      --exclude 'queue/' --exclude 'hpc/site.env' --exclude '.venv' --exclude '.meep-env' --exclude '.mamba' \
       "$REPO/" "$SSH_TARGET:~/$REMOTE_DIR/" ;;
 
   pull)

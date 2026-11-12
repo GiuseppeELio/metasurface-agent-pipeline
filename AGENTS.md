@@ -84,7 +84,9 @@ Check whether `hpc/site.env` exists. If it does not, ask the user, one short blo
    `runs/bench_*/benchmark.json`. Use its numbers to estimate run times before submitting work, for example seconds
    per RCWA simulation at a given order, or seconds per optimization iteration. Use them also to choose the device:
    on consumer GPUs (GeForce RTX) RCWA libraries are often faster on the CPU, while topology optimization is faster
-   on the GPU. Quote the estimate to the user when asking for compute.
+   on the GPU. On a GPU node, run the benchmark with `--eig-device gpu` and `--eig-device cpu`: if the eigensolver is
+   faster on the CPU, set `METASURF_EIG_DEVICE=cpu` for GPU jobs (in `GPU_SBATCH`, `--export=ALL,METASURF_EIG_DEVICE=cpu`)
+   and keep about 8 cores per GPU job. Quote the estimate to the user when asking for compute.
 7. **Meep (FDTD validation).** Explain this to the user in a few lines, then let them decide:
    - **What it is for.** Meep is an independent FDTD solver. The pipeline uses it to cross-check every design
      reported as final (section 4.C). Optimization does not need it.

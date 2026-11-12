@@ -61,7 +61,8 @@ def machine_info():
                     cuda_available=torch.cuda.is_available())
         if torch.cuda.is_available():
             p = torch.cuda.get_device_properties(0)
-            info.update(gpu=p.name, gpu_mem_gb=round(p.total_memory / 2 ** 30, 1), gpu_cc=f"{p.major}.{p.minor}")
+            info.update(gpu=p.name, gpu_mem_gb=round(p.total_memory / 2 ** 30, 1), gpu_cc=f"{p.major}.{p.minor}",
+                        eig_device=os.environ.get("METASURF_EIG_DEVICE", "gpu") or "gpu")
     except Exception as e:
         info["torch_error"] = str(e)
     for mod in ("numpy", "torcwa", "meep"):
@@ -196,8 +197,12 @@ def main():
     ap.add_argument("--np", type=int, nargs="+", default=None, help="MPI process counts for tier 4 (default 1 2 4 ... up to the cores)")
     ap.add_argument("--mpirun", default="mpirun")
     ap.add_argument("--keep", action="store_true", help="keep the temporary *_bench runs")
+    ap.add_argument("--eig-device", choices=["gpu", "cpu"],
+                    help="where torch.linalg.eig of CUDA tensors runs (sets METASURF_EIG_DEVICE for all tiers); default: environment")
     ap.add_argument("--keep-lens", action="store_true", help="keep runs/t3_lens_bench (needed for a later tier-4 run)")
     A = ap.parse_args()
+    if A.eig_device:                      # inherited by every tier's subprocess
+        os.environ["METASURF_EIG_DEVICE"] = A.eig_device
     if A.tiers is None:
         A.tiers = [0, 1, 2, 3]
         try:

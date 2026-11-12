@@ -1,4 +1,6 @@
 hpc/site.env
+hpc/site.env.*
+!hpc/site.env.example
 runs/
 logs/
 queue/

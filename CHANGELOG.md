@@ -4,6 +4,26 @@ All notable changes to this project are documented here. The pipeline is improve
 says what changed and why, so that results obtained with earlier versions can be traced.
 
 
+## [0.3.1] - unreleased
+
+- **Hybrid CPU/GPU eigensolver**: `METASURF_EIG_DEVICE=cpu` (`ptopt/device.py`, applied at `import ptopt`).
+  - Only `torch.linalg.eig` of CUDA tensors runs on the CPU (LAPACK/MKL); everything else stays on the GPU.
+  - Results are identical.
+  - On the CINECA Leonardo Booster node (A100 + 8 Xeon 8358 cores) the default hybrid CUDA eig was slower than MKL;
+    with this option TORCWA forward + backward ran 1.4 times faster, and the A100 became 1.4–1.5 times faster than
+    a V100S in the benchmark.
+  - Off by default.
+- **Benchmark**: `--eig-device gpu|cpu` (stored as `machine.eig_device`). Leonardo reference results (Booster A100,
+  DCGP CPU node for Meep) in `docs/benchmark/` and `docs/BENCHMARK.md`, with a section on the eigensolver
+  placement. README table updated.
+- **Cluster setup**:
+  - `hpc/setup_env.sh` and the SLURM job scripts unset `PYTHONPATH` after loading modules. Some site Python modules
+    (for example on Leonardo) put their own pip on it and break the virtual environment. Installs use `python -m pip`.
+  - `.gitignore`: per-cluster profiles `hpc/site.env.*` (the example stays tracked).
+- **Fix** in `hpc/bridge.sh`: the rsync excludes of `.venv`, `.meep-env` and `.mamba` lacked a match for symlinks. A
+  symlinked `.meep-env` on the cluster (one Meep install shared by two checkouts) was deleted at every push.
+- **Docs**: `AGENTS.md` onboarding step 6c (benchmark both eigensolver placements on GPU nodes), `hpc/site.env.example`.
+
 ## [0.3.0] - 2026-11-06
 
 - **Accompanying paper** on arXiv: [arXiv:2611.08127](https://arxiv.org/abs/2611.08127). The reference is in the README,
