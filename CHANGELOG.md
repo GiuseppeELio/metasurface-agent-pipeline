@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The pipeline is improve
 says what changed and why, so that results obtained with earlier versions can be traced.
 
 
-## [Unreleased]
+## [0.4.0] - 2026-11-26
 
 - **COMSOL validation (optional, local)** in `validation/comsol/`: a third, independent solver (finite elements,
   COMSOL 6.4 Wave Optics) next to TORCWA and Meep.

@@ -7,8 +7,8 @@ authors:
     given-names: Giuseppe Emanuele
     orcid: "https://orcid.org/0000-0002-8925-7202"
     affiliation: University of Pisa
-version: 0.3.0
-date-released: "2026-11-06"
+version: 0.4.0
+date-released: "2026-11-26"
 doi: 10.5281/zenodo.23982523
 repository-code: "https://codeberg.org/GiuseppeELio/metasurface-agent-pipeline"
 repository: "https://github.com/GiuseppeELio/metasurface-agent-pipeline"

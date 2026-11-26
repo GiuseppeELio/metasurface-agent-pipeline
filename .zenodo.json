@@ -1,7 +1,7 @@
 {
   "title": "metasurface-agent-pipeline: agent-driven inverse design of dielectric metasurfaces",
   "upload_type": "software",
-  "description": "<p>An agent-driven inverse-design pipeline for dielectric metasurfaces and metagratings. The user describes the target in plain language; an AI coding agent turns it into a configuration, runs GPU-accelerated, differentiable RCWA topology optimization (TORCWA) on a local machine or a SLURM cluster, analyses the results and proposes the next design iteration. Fabrication robustness, meta-atom libraries, supercells, metalenses and an independent FDTD check (MIT Meep) are part of the loop.</p><p>Development repository: <a href=\"https://codeberg.org/GiuseppeELio/metasurface-agent-pipeline\">https://codeberg.org/GiuseppeELio/metasurface-agent-pipeline</a>. Changes between versions are listed in CHANGELOG.md.</p><p>Accompanying paper: <a href=\"https://arxiv.org/abs/2611.08127\">arXiv:2611.08127</a>.</p>",
+  "description": "<p>An agent-driven inverse-design pipeline for dielectric metasurfaces and metagratings. The user describes the target in plain language; an AI coding agent turns it into a configuration, runs GPU-accelerated, differentiable RCWA topology optimization (TORCWA) on a local machine or a SLURM cluster, analyses the results and proposes the next design iteration. Fabrication robustness, meta-atom libraries, supercells, metalenses and an independent FDTD check (MIT Meep) are part of the loop, with an optional finite-element check in COMSOL Multiphysics on the user's own licence.</p><p>Development repository: <a href=\"https://codeberg.org/GiuseppeELio/metasurface-agent-pipeline\">https://codeberg.org/GiuseppeELio/metasurface-agent-pipeline</a>. Changes between versions are listed in CHANGELOG.md.</p><p>Accompanying paper: <a href=\"https://arxiv.org/abs/2611.08127\">arXiv:2611.08127</a>.</p>",
   "creators": [
     {
       "name": "Lio, Giuseppe Emanuele",
@@ -18,6 +18,8 @@
     "topology optimization",
     "RCWA",
     "FDTD",
+    "finite element method",
+    "COMSOL",
     "nanophotonics",
     "AI agents"
   ],
