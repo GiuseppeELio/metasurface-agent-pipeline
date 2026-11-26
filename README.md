@@ -169,6 +169,30 @@ GPU node: see "Hybrid CPU/GPU placement" in `docs/BENCHMARK.md`.
 
 ![Benchmark: time per tier](docs/benchmark/bench_times.png)
 
+## Independent check with COMSOL (optional)
+
+Next to TORCWA (RCWA) and Meep (FDTD), a finished design can be checked with COMSOL Multiphysics 6.4 (Wave Optics,
+finite elements) on the user's own computer and licence. `validation/comsol/` does three things:
+
+- it writes the 3D unit cell of a run as a COMSOL model; the compiled `.class` also opens in the GUI;
+- it solves the model in batch with GMRES on two mesh levels;
+- it compares the result with RCWA and Meep, with the same thresholds as the Meep check.
+
+An agent sets it up when the user asks for a COMSOL check (see `AGENTS.md`, section 4.C2).
+
+![COMSOL model of the freeform metagrating si1550_defl_v4_s2](validation/comsol/figures/si1550_defl_v4_s2_comsol.jpg)
+
+Test case: the robust freeform metagrating of the paper (`si1550_defl_v4_s2`, +1 order at 50°). It was solved on a
+Mac mini with 16 GB: 2.4 M DOF, under 2 minutes per polarization. Efficiency of the +1 order:
+
+| Pol | COMSOL (L2) | RCWA [70, 12] | Meep (60 px/µm) | Verdict |
+|---|---|---|---|---|
+| x | 0.808 | 0.806 | 0.801 | agree |
+| y | 0.598 | 0.636 | 0.628 | marginal |
+
+In y, COMSOL is converged with the mesh while RCWA still decreases with the truncation (0.664 → 0.646 → 0.636).
+Details, commands and the variables to read in the GUI: [`validation/comsol/README.md`](validation/comsol/README.md).
+
 ## Agent mode (local or HPC)
 
 ```bash
