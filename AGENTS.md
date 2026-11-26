@@ -111,6 +111,10 @@ Check whether `hpc/site.env` exists. If it does not, ask the user, one short blo
    - `off`: only if the user does not want FDTD at all. Then say clearly that the results are not cross-checked.
 
    The user can change this at any time in chat.
+
+   Also tell the user, in one line, that a **COMSOL check** (finite elements, a third solver) is available on
+   request if they have COMSOL 6.4 with Wave Optics on their own computer (section 4.C2). Do not offer it again
+   unless they ask, and never queue it on the cluster.
 9. **New users:** offer the worked example in `examples/README.md`. It runs on a laptop CPU in a few minutes and
    shows every stage on real data from the silicon case study.
 
@@ -226,6 +230,32 @@ Notes:
 - The Courant factor is 0.35 by default, and the MaterialGrid is bilinear without gradient averaging: both avoid
   NaN instabilities seen with binary high-index designs.
 - A few % offset at moderate resolution is normal. Report both numbers and the resolution trend.
+
+### C2. COMSOL check (optional, local)
+
+A third solver (finite elements) for final designs. Run it when the user asks for a COMSOL check (for example "verify
+it with COMSOL", "COMSOL-based test") and has COMSOL 6.4 with Wave Optics on their own computer. It never runs on the
+cluster, and the agent does not run COMSOL itself: it writes the models and gives the user the commands. Details,
+verdict rules and the variables to read in the GUI: `validation/comsol/README.md`.
+
+Ask the user once for the RAM of the machine (`--ram-gb`). The models use the iterative solver (GMRES); the direct
+solver needs too much memory for 3D cells. Two mesh levels are written: L1 (60 nm in the patterned layer) and L2
+(45 nm, more accurate, about twice as slow); L2 is the reported value and the L1 → L2 shift is the mesh check.
+
+1. Make sure `runs/<dir>/rcwa_ref.json` exists (step C.1).
+2. Write the models: `python validation/comsol/comsol_export.py --run runs/<dir> --ram-gb <RAM of the user's machine>`.
+   It prints the geometry check (pixel agreement) and the estimated DOF and RAM of each mesh level. Read them to the user.
+3. Give the user the commands to run in their terminal, without `# comments` (zsh):
+   - `bash validation/comsol/run_comsol.sh --build-only runs/<dir>` compiles the `.class` files, which open in the
+     COMSOL GUI (*File > Open*);
+   - `bash validation/comsol/run_comsol.sh runs/<dir>` compiles and solves every mesh level in batch.
+4. Then run `python validation/comsol/comsol_compare.py --run runs/<dir>` (add `--rcwa <file>` when a higher-order
+   RCWA reference exists, e.g. `rcwa_ref_o70.json`) and report the table and the verdict
+   with the RCWA and Meep values. Read the `WARN` lines in `runs/<dir>/comsol/MS_*_log.txt` before trusting a result.
+5. A failed gate (R+T, flux vs port, Fourier sum) means the COMSOL model is not right yet: fix the model, not the verdict.
+6. If COMSOL is converged with the mesh (L1 → L2 shift well below the gap) while RCWA still moves with the truncation,
+   the gap is most likely RCWA truncation: raise the RCWA order (more y harmonics for E along y) before calling it a
+   disagreement. Reference case and timings: section "Test results" of `validation/comsol/README.md`.
 
 ### D. Metalens from the library
 

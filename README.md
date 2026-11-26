@@ -15,7 +15,8 @@ FDTD check are part of the loop.
 
 Electromagnetic solver: [TORCWA](https://github.com/kch3782/torcwa) (PyTorch RCWA with automatic
 differentiation; C. Kim and B. Lee, *Comput. Phys. Commun.* **282**, 108552, 2023).
-Validation: [MIT Meep](https://meep.readthedocs.io) (FDTD).
+Validation: [MIT Meep](https://meep.readthedocs.io) (FDTD), and optionally COMSOL Multiphysics (finite elements, on the user's own
+licence, see [`validation/comsol/`](validation/comsol/README.md)).
 
 > **Using an AI agent?** Point it to [`AGENTS.md`](AGENTS.md). It contains the onboarding procedure,
 > the job protocol and the analysis checklist the agent is expected to follow.
@@ -65,6 +66,7 @@ Validation: [MIT Meep](https://meep.readthedocs.io) (FDTD).
 | Optical constants from the refractiveindex.info database (download, search, inspect) | `tools/fetch_materials.py` | `{"material": "rii:<shelf/book/page>"}` in any config |
 | Regression test against the worked example | `tools/selftest.py` | PASS/FAIL per check, exit code |
 | Independent FDTD runs (periodic designs / metalens) | `validation/meep_validate.py`, `validation/meep_lens.py` | `meep_res<R>.json`, `meep_lens_res<R>.json` |
+| Optional finite-element check with a local COMSOL 6.4 (Wave Optics): model generation, batch solve, verdict | [`validation/comsol/`](validation/comsol/README.md) (tested on the freeform metagrating of the paper) | `.java`/`.class` models, `comsol_validation.json` |
 | Cross-machine benchmark (timing and agreement) | `tools/benchmark.py`, `tools/bench_report.py` | `benchmark.json`, table and figures |
 
 Every run reports:
@@ -191,7 +193,7 @@ ptopt/            problem definition, materials, objectives, morphology tools
 configs/          example configurations (JSON)
 tools/            sweep generators, materials database (fetch_materials.py), self-test (selftest.py),
                   achromatic-lens tools (tio2_lut.py, achro_tio2.py), cross-machine benchmark (benchmark.py)
-validation/       Meep FDTD validation
+validation/       Meep FDTD validation; validation/comsol/: optional COMSOL (finite elements) check
 hpc/              bridge.sh, environment setup, generic SLURM job templates, site.env.example
 examples/         worked example: finished runs of the silicon case study at 1550 nm
 AGENTS.md         instructions for AI agents working with this repository
@@ -225,5 +227,6 @@ MIT License, see [`LICENSE`](LICENSE).
 Third-party software is installed separately and keeps its own license:
 - TORCWA: LGPL, installed with `pip install torcwa`;
 - MIT Meep: GPL, installed from conda-forge by `hpc/setup_meep.sh`;
+- COMSOL Multiphysics: commercial, not included. The optional COMSOL check needs the user's own licence with the Wave Optics module;
 - PyTorch: BSD-style;
 - refractiveindex.info database: CC0, downloaded on request by `tools/fetch_materials.py`.

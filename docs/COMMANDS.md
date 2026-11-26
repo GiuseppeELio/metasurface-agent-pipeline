@@ -92,6 +92,9 @@ python run_topopt.py --config <cfg.json> [--device auto|cuda|cpu] [--iters N] [-
 | `python validation/torcwa_fields.py --run runs/<dir>` | Field comparison | RCWA near fields in the xz plane, in `fields_rcwa.npz`. |
 | `python validation/compare_fields.py --run runs/<dir>` | Field comparison | Near-field maps, beam propagation and per-order efficiencies (% of incident power) for both solvers. |
 | `python validation/validate.py plan --runs ... --level quick\|full --tag T [--enqueue]` | Validation stage, step 1 | Writes the GPU list and the Meep list for one round, from `configs/validation_policy.json`, and estimates the Meep time. |
+| `python validation/comsol/comsol_export.py --run runs/<dir> [--ram-gb 16] [--levels 2] [--shift-nm d]` | Optional COMSOL check (local) | One COMSOL 6.4 Java model per mesh level (L1 60 nm, L2 45 nm in the patterned layer) in `runs/<dir>/comsol/`, with the geometry check and the DOF/RAM plan. |
+| `bash validation/comsol/run_comsol.sh [--build-only] [--no-save] [--cores N] runs/<dir> [class]` | Optional COMSOL check (local) | Compiles the models into `.class` files (they open in the COMSOL GUI); without `--build-only` solves them in batch with GMRES. |
+| `python validation/comsol/comsol_compare.py --run runs/<dir> [--rcwa rcwa_ref_o70.json]` | After the COMSOL batch | COMSOL vs RCWA (and Meep) with the same thresholds, plus three COMSOL self-consistency gates. Writes `comsol_validation.json`. |
 | `python validation/validate.py report --runs ... [--figures]` | Validation stage, step 2 | Verdict per design, edge shift and polarization (`agree`, `marginal`, `inconclusive`, `disagree`), plus the rank agreement. Writes `validation.json`. |
 
 ## E. Typical sessions

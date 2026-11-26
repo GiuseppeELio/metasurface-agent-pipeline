@@ -6,6 +6,19 @@ says what changed and why, so that results obtained with earlier versions can be
 
 ## [Unreleased]
 
+- **COMSOL validation (optional, local)** in `validation/comsol/`: a third, independent solver (finite elements,
+  COMSOL 6.4 Wave Optics) next to TORCWA and Meep.
+  - `comsol_export.py` writes one Java model per run and mesh level: the 3D unit cell with the design as exact
+    rectangles (1D gratings) or smoothed contours (freeform, pixel agreement checked), Floquet conditions, periodic
+    ports with diffraction orders, a mesh planner for the available RAM, and a Fourier projection of the scattered
+    orders that does not depend on the port post-processing.
+  - `run_comsol.sh` compiles the models into `.class` files (they open in the COMSOL GUI) and solves them in batch.
+  - `comsol_compare.py` gives the verdict with the Meep thresholds and three COMSOL self-consistency gates.
+  - API names verified against a COMSOL 6.4.0.378 model export.
+  - Tested on `si1550_defl_v4_s2`, the freeform metagrating of the paper (pattern varying in x and y, smoothed contours),
+    on a 16 GB Mac mini: 1.8 M / 2.4 M DOF, under 4 minutes per level. η(+1) in x: COMSOL 0.808, RCWA [70,12] 0.806, Meep 0.801
+    (agree). In y: COMSOL 0.598 (mesh-converged), RCWA 0.636 and still decreasing with the order (marginal). Results in
+    `validation/comsol/README.md`.
 - README: acknowledgement of the CINECA ISCRA award (project DENZMODE).
 
 ## [0.3.1] - 2026-11-12
